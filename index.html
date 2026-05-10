@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Volume Sonore</title>
+<title>DÉCIBEL ZONE</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&display=swap');
 
@@ -223,7 +223,7 @@
 <!-- SPLASH -->
 <div class="splash" id="splash">
   <div class="splash-icon">🎙️</div>
-  <h2>Volume Sonore</h2>
+  <h2 id="splashTitle">DÉCIBEL ZONE</h2>
   <p>Pour mesurer le niveau sonore, l'application a besoin d'accéder à votre microphone.</p>
   <button class="btn-allow" id="btnAllow" onclick="requestMic()">🎤 Activer le microphone</button>
   <div class="splash-error" id="splashError"></div>
@@ -269,7 +269,7 @@
 
 <!-- APP -->
 <div class="container">
-  <h1>🎙️ Volume Sonore </h1>
+  <h1 id="mainTitle">🔊 DÉCIBEL ZONE</h1>
 
   <div class="mic-status"><div class="mic-dot"></div><span>MICROPHONE ACTIF</span></div>
 
@@ -300,14 +300,34 @@
 </div>
 
 <script>
+  // ── Titre aléatoire à chaque démarrage ──
+  const TITRES = [
+    { emoji: "🔊", text: "DÉCIBEL ZONE" },
+    { emoji: "📢", text: "BRUIT-O-MÈTRE" },
+    { emoji: "🚨", text: "NOISE ALERT" },
+    { emoji: "🎚️", text: "LE SOUND CHECK" },
+    { emoji: "🚔", text: "VOLUME POLICE" }
+  ];
+  const t = TITRES[Math.floor(Math.random() * TITRES.length)];
+  document.getElementById("splashTitle").textContent = t.text;
+  document.getElementById("mainTitle").textContent   = t.emoji + " " + t.text;
+  document.title = t.text;
+
   let audioCtx, analyser, source, animFrame, micStream;
   let isRunning = false;
   let smoothedDb = 30, displayedDb = -1;
   const SMOOTH = 0.08;
 
-  let seuils = { s1:50, s2:65, s3:78 };
+  // Charger les seuils sauvegardés ou utiliser les valeurs par défaut
+  const saved = JSON.parse(localStorage.getItem("sonometre_seuils") || "null");
+  let seuils = saved || { s1:50, s2:65, s3:78 };
 
   // Waveform bars
+  // Initialiser les sliders avec les valeurs chargées
+  document.getElementById("s1").value = seuils.s1;
+  document.getElementById("s2").value = seuils.s2;
+  document.getElementById("s3").value = seuils.s3;
+
   const waveformEl = document.getElementById('waveform');
   for (let i = 0; i < 32; i++) {
     const b = document.createElement('div'); b.className='bar'; waveformEl.appendChild(b);
@@ -323,6 +343,7 @@
     if (v2 <= v1) { v2 = v1+5; document.getElementById('s2').value = v2; }
     if (v3 <= v2) { v3 = v2+5; document.getElementById('s3').value = v3; }
     seuils = {s1:v1,s2:v2,s3:v3};
+    localStorage.setItem("sonometre_seuils", JSON.stringify(seuils));
     document.getElementById('v1').textContent = v1+' dB';
     document.getElementById('v2').textContent = v2+' dB';
     document.getElementById('v3').textContent = v3+' dB';
