@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Volume Sonore</title>
+<title>Sonomètre de Classe</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&display=swap');
 
   :root {
-    --green: #00e676;
+    --green:  #00e676;
     --yellow: #ffea00;
     --orange: #ff6d00;
-    --red: #ff1744;
-    --bg: #0a0a12;
-    --surface: #13131f;
-    --text: #f0f0ff;
+    --red:    #ff1744;
+    --bg:     #0a0a12;
+    --surface:#13131f;
+    --text:   #f0f0ff;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin:0; padding:0; box-sizing:border-box; }
 
   body {
     background: var(--bg);
@@ -33,187 +33,202 @@
   }
 
   body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
+    content:'';
+    position:fixed; inset:0;
     background-image:
       linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
+    background-size:40px 40px;
+    pointer-events:none;
   }
 
-  /* ===== SPLASH ===== */
+  /* ── SPLASH ── */
   .splash {
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 32px;
-    background: var(--bg);
-    transition: opacity 0.6s ease, visibility 0.6s ease;
+    position:fixed; inset:0; z-index:200;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:32px;
+    background:var(--bg);
+    transition: opacity .6s ease, visibility .6s ease;
   }
-  .splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
-  .splash-icon { font-size: 6rem; animation: float 2.5s ease-in-out infinite; }
-
+  .splash.hidden { opacity:0; visibility:hidden; pointer-events:none; }
+  .splash-icon { font-size:6rem; animation:float 2.5s ease-in-out infinite; }
   .splash h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2rem, 6vw, 4rem);
-    letter-spacing: 4px;
-    background: linear-gradient(135deg, #a78bfa, #60a5fa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-align: center;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(2rem,6vw,4rem); letter-spacing:4px; text-align:center;
+    background:linear-gradient(135deg,#a78bfa,#60a5fa);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
   }
-
-  .splash p { font-size: 1.1rem; opacity: 0.6; text-align: center; max-width: 360px; line-height: 1.6; }
-
+  .splash p { font-size:1.1rem; opacity:.6; text-align:center; max-width:360px; line-height:1.6; }
   .btn-allow {
-    padding: 18px 48px;
-    border: none;
-    border-radius: 50px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: 1.2rem;
-    letter-spacing: 1px;
-    cursor: pointer;
-    background: linear-gradient(135deg, #a78bfa, #60a5fa);
-    color: white;
-    transition: all 0.2s;
-    animation: pulse-btn 2s ease-in-out infinite;
+    padding:18px 48px; border:none; border-radius:50px;
+    font-family:'Nunito',sans-serif; font-weight:900; font-size:1.2rem; letter-spacing:1px;
+    cursor:pointer; background:linear-gradient(135deg,#a78bfa,#60a5fa); color:white;
+    transition:all .2s; animation:pulse-btn 2s ease-in-out infinite;
   }
-  .btn-allow:hover   { transform: scale(1.06); }
-  .btn-allow:disabled { opacity: 0.6; cursor: wait; animation: none; }
-
-  @keyframes pulse-btn {
-    0%,100% { box-shadow: 0 0 30px rgba(167,139,250,0.3); }
-    50%     { box-shadow: 0 0 60px rgba(167,139,250,0.6); }
-  }
-
+  .btn-allow:hover   { transform:scale(1.06); }
+  .btn-allow:disabled { opacity:.6; cursor:wait; animation:none; }
+  @keyframes pulse-btn { 0%,100%{box-shadow:0 0 30px rgba(167,139,250,.3);} 50%{box-shadow:0 0 60px rgba(167,139,250,.6);} }
   .splash-error {
-    color: var(--red);
-    font-weight: 700;
-    font-size: 0.95rem;
-    text-align: center;
-    max-width: 340px;
-    display: none;
-    background: rgba(255,23,68,0.1);
-    border: 1px solid rgba(255,23,68,0.3);
-    border-radius: 12px;
-    padding: 12px 24px;
-    line-height: 1.5;
+    color:var(--red); font-weight:700; font-size:.95rem; text-align:center;
+    max-width:340px; display:none;
+    background:rgba(255,23,68,.1); border:1px solid rgba(255,23,68,.3);
+    border-radius:12px; padding:12px 24px; line-height:1.5;
   }
 
-  /* ===== APP ===== */
+  /* ── APP ── */
   .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 32px;
-    width: 100%;
-    max-width: 900px;
-    padding: 20px;
-    position: relative;
-    z-index: 1;
+    display:flex; flex-direction:column; align-items:center; gap:24px;
+    width:100%; max-width:900px; padding:20px;
+    position:relative; z-index:1;
   }
 
   h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    letter-spacing: 4px;
-    text-align: center;
-    background: linear-gradient(135deg, #a78bfa, #60a5fa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(2rem,5vw,4rem); letter-spacing:4px; text-align:center;
+    background:linear-gradient(135deg,#a78bfa,#60a5fa);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
   }
 
   .db-display {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(5rem, 18vw, 14rem);
-    line-height: 1;
-    letter-spacing: -4px;
-    transition: color 0.4s ease, text-shadow 0.4s ease;
-    text-shadow: 0 0 60px currentColor;
-    color: var(--green);
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(5rem,18vw,13rem); line-height:1; letter-spacing:-4px;
+    transition:color .4s ease, text-shadow .4s ease;
+    text-shadow:0 0 60px currentColor; color:var(--green);
   }
-  .db-display span { font-size: 0.35em; font-family: 'Nunito', sans-serif; font-weight: 900; letter-spacing: 2px; opacity: 0.7; }
+  .db-display span { font-size:.35em; font-family:'Nunito',sans-serif; font-weight:900; letter-spacing:2px; opacity:.7; }
 
-  .gauge-wrapper { width: 100%; display: flex; flex-direction: column; gap: 10px; }
-  .gauge-labels { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; }
-
-  .gauge-track { width: 100%; height: 40px; background: rgba(255,255,255,0.05); border-radius: 20px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.08); }
-
+  /* Gauge */
+  .gauge-wrapper { width:100%; display:flex; flex-direction:column; gap:8px; }
+  .gauge-labels  { display:flex; justify-content:space-between; font-size:.75rem; font-weight:700; opacity:.5; letter-spacing:2px; text-transform:uppercase; }
+  .gauge-track   { width:100%; height:36px; background:rgba(255,255,255,.05); border-radius:20px; overflow:visible; position:relative; border:1px solid rgba(255,255,255,.08); }
   .gauge-fill {
-    height: 100%;
-    border-radius: 20px;
-    width: 0%;
-    transition: width 0.15s ease-out;
-    position: relative;
-    background: linear-gradient(90deg, var(--green) 0%, var(--yellow) 55%, var(--orange) 75%, var(--red) 100%);
-    background-size: 900px 100%;
+    height:100%; border-radius:20px; width:0%;
+    transition:width .15s ease-out; position:relative;
+    background:linear-gradient(90deg,var(--green) 0%,var(--yellow) 55%,var(--orange) 75%,var(--red) 100%);
+    background-size:900px 100%;
+    overflow:hidden;
   }
-  .gauge-fill::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 100%); border-radius: 20px; }
+  .gauge-fill::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(255,255,255,.25) 0%,transparent 100%); border-radius:20px; }
 
-  .gauge-marker { position: absolute; top: 0; bottom: 0; width: 3px; background: white; opacity: 0.6; border-radius: 2px; }
-  .gauge-marker::after { content: 'SEUIL'; position: absolute; top: -22px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; font-weight: 700; letter-spacing: 1px; color: white; opacity: 0.7; white-space: nowrap; }
+  /* 4 threshold markers */
+  .gauge-marker {
+    position:absolute; top:-2px; bottom:-2px; width:3px;
+    border-radius:2px; opacity:.8;
+  }
+  .gauge-marker::after {
+    content:attr(data-label);
+    position:absolute; bottom:calc(100% + 4px); left:50%; transform:translateX(-50%);
+    font-size:.55rem; font-weight:700; letter-spacing:1px; white-space:nowrap; opacity:.8;
+  }
+  .marker-silence { background:var(--green);  } .marker-silence::after { color:var(--green);  }
+  .marker-normal  { background:var(--yellow); } .marker-normal::after  { color:var(--yellow); }
+  .marker-bruyant { background:var(--orange); } .marker-bruyant::after { color:var(--orange); }
 
+  /* Status */
   .status {
-    font-size: clamp(1.5rem, 4vw, 3rem);
-    font-weight: 900;
-    text-align: center;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 16px 40px;
-    border-radius: 16px;
-    transition: all 0.4s ease;
-    min-width: 320px;
+    font-size:clamp(1.2rem,3.5vw,2.5rem); font-weight:900; text-align:center;
+    letter-spacing:2px; text-transform:uppercase;
+    padding:14px 36px; border-radius:16px; transition:all .4s ease; min-width:300px;
   }
-  .status.calme       { background: rgba(0,230,118,0.12);  color: var(--green);  border: 2px solid rgba(0,230,118,0.3); }
-  .status.modere      { background: rgba(255,234,0,0.12);  color: var(--yellow); border: 2px solid rgba(255,234,0,0.3); }
-  .status.bruyant     { background: rgba(255,109,0,0.15);  color: var(--orange); border: 2px solid rgba(255,109,0,0.4); animation: pulse-orange 0.8s ease-in-out infinite alternate; }
-  .status.trop-bruyant{ background: rgba(255,23,68,0.2);   color: var(--red);    border: 2px solid rgba(255,23,68,0.5); animation: pulse-red 0.4s ease-in-out infinite alternate; }
+  .status.calme       { background:rgba(0,230,118,.12);  color:var(--green);  border:2px solid rgba(0,230,118,.3); }
+  .status.modere      { background:rgba(255,234,0,.12);  color:var(--yellow); border:2px solid rgba(255,234,0,.3); }
+  .status.bruyant     { background:rgba(255,109,0,.15);  color:var(--orange); border:2px solid rgba(255,109,0,.4); animation:pulse-orange .8s ease-in-out infinite alternate; }
+  .status.trop-bruyant{ background:rgba(255,23,68,.2);   color:var(--red);    border:2px solid rgba(255,23,68,.5); animation:pulse-red .4s ease-in-out infinite alternate; }
+  @keyframes pulse-orange { from{box-shadow:0 0 0 rgba(255,109,0,0);} to{box-shadow:0 0 30px rgba(255,109,0,.4);} }
+  @keyframes pulse-red    { from{box-shadow:0 0 0 rgba(255,23,68,0); transform:scale(1);} to{box-shadow:0 0 50px rgba(255,23,68,.6); transform:scale(1.02);} }
 
-  @keyframes pulse-orange { from{box-shadow:0 0 0px rgba(255,109,0,0);} to{box-shadow:0 0 30px rgba(255,109,0,0.4);} }
-  @keyframes pulse-red    { from{box-shadow:0 0 0px rgba(255,23,68,0); transform:scale(1);} to{box-shadow:0 0 50px rgba(255,23,68,0.6); transform:scale(1.02);} }
-
-  .emoji { font-size: clamp(3rem, 8vw, 6rem); filter: drop-shadow(0 0 20px rgba(255,255,255,0.3)); transition: all 0.3s; animation: float 3s ease-in-out infinite; }
+  .emoji { font-size:clamp(2.5rem,7vw,5rem); filter:drop-shadow(0 0 20px rgba(255,255,255,.3)); transition:all .3s; animation:float 3s ease-in-out infinite; }
   @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
 
-  .waveform { display: flex; align-items: center; gap: 4px; height: 60px; }
-  .bar { width: 6px; background: rgba(167,139,250,0.4); border-radius: 3px; transition: height 0.1s ease; height: 4px; }
+  .waveform { display:flex; align-items:center; gap:4px; height:50px; }
+  .bar { width:6px; background:rgba(167,139,250,.4); border-radius:3px; transition:height .1s ease; height:4px; }
 
-  .controls { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; justify-content: center; }
+  /* Controls row */
+  .controls { display:flex; gap:12px; align-items:center; flex-wrap:wrap; justify-content:center; }
+  button { padding:11px 28px; border:none; border-radius:50px; font-family:'Nunito',sans-serif; font-weight:900; font-size:.95rem; letter-spacing:1px; cursor:pointer; transition:all .2s; }
+  .btn-stop    { background:rgba(255,255,255,.08); color:rgba(255,255,255,.7); border:1px solid rgba(255,255,255,.15); }
+  .btn-stop:hover    { background:rgba(255,255,255,.15); }
+  .btn-restart { background:linear-gradient(135deg,#a78bfa,#60a5fa); color:white; }
+  .btn-restart:hover { transform:scale(1.05); box-shadow:0 8px 30px rgba(167,139,250,.4); }
+  .btn-settings {
+    background:rgba(255,255,255,.06); color:rgba(255,255,255,.6);
+    border:1px solid rgba(255,255,255,.12);
+    display:flex; align-items:center; gap:8px;
+  }
+  .btn-settings:hover { background:rgba(255,255,255,.12); color:white; }
+  .btn-settings.active { background:rgba(167,139,250,.15); color:#a78bfa; border-color:#a78bfa; }
 
-  button { padding: 12px 32px; border: none; border-radius: 50px; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; }
-  .btn-stop    { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.15); }
-  .btn-stop:hover { background: rgba(255,255,255,0.15); }
-  .btn-restart { background: linear-gradient(135deg, #a78bfa, #60a5fa); color: white; }
-  .btn-restart:hover { transform: scale(1.05); box-shadow: 0 8px 30px rgba(167,139,250,0.4); }
+  /* ── SETTINGS PANEL ── */
+  .settings-panel {
+    width:100%; max-width:700px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:20px;
+    padding:24px 32px;
+    display:none;
+    flex-direction:column;
+    gap:20px;
+    animation:slide-down .25s ease;
+  }
+  .settings-panel.open { display:flex; }
+  @keyframes slide-down { from{opacity:0;transform:translateY(-10px);} to{opacity:1;transform:translateY(0);} }
 
-  .threshold-control { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 50px; padding: 10px 24px; }
-  .threshold-control label { font-size: 0.85rem; font-weight: 700; opacity: 0.7; letter-spacing: 1px; white-space: nowrap; }
-  input[type="range"] { -webkit-appearance: none; width: 120px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; outline: none; }
-  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(135deg, #a78bfa, #60a5fa); cursor: pointer; }
-  .threshold-value { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: #a78bfa; min-width: 50px; }
+  .settings-title {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.4rem; letter-spacing:3px; opacity:.6; text-align:center;
+  }
 
-  .flash-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: 0; background: rgba(255,23,68,0.15); transition: opacity 0.05s; }
+  .seuil-row {
+    display:flex; align-items:center; gap:16px;
+  }
 
-  .mic-status { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 700; opacity: 0.6; letter-spacing: 1px; }
-  .mic-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); animation: blink 1.2s ease-in-out infinite; }
-  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
+  .seuil-label {
+    display:flex; align-items:center; gap:10px;
+    font-weight:700; font-size:.9rem; letter-spacing:1px; text-transform:uppercase;
+    min-width:130px;
+  }
+  .seuil-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+
+  input[type="range"] {
+    -webkit-appearance:none; flex:1; height:5px;
+    border-radius:3px; outline:none; cursor:pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance:none; width:20px; height:20px;
+    border-radius:50%; cursor:pointer;
+    border:2px solid var(--bg);
+  }
+  .range-silence::-webkit-slider-thumb { background:var(--green); }
+  .range-silence { background:rgba(0,230,118,.25); }
+  .range-normal::-webkit-slider-thumb  { background:var(--yellow); }
+  .range-normal  { background:rgba(255,234,0,.2); }
+  .range-bruyant::-webkit-slider-thumb { background:var(--orange); }
+  .range-bruyant { background:rgba(255,109,0,.2); }
+
+  .seuil-value {
+    font-family:'Bebas Neue',sans-serif; font-size:1.5rem;
+    min-width:64px; text-align:right;
+  }
+  .val-silence { color:var(--green); }
+  .val-normal  { color:var(--yellow); }
+  .val-bruyant { color:var(--orange); }
+
+  .settings-hint { font-size:.8rem; opacity:.4; text-align:center; font-weight:700; letter-spacing:.5px; }
+
+  /* Flash */
+  .flash-overlay { position:fixed; inset:0; pointer-events:none; z-index:100; opacity:0; background:rgba(255,23,68,.15); transition:opacity .05s; }
+
+  /* Mic dot */
+  .mic-status { display:flex; align-items:center; gap:8px; font-size:.8rem; font-weight:700; opacity:.5; letter-spacing:1px; }
+  .mic-dot { width:9px; height:9px; border-radius:50%; background:var(--green); animation:blink 1.2s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.2;} }
 </style>
 </head>
 <body>
 
+<!-- SPLASH -->
 <div class="splash" id="splash">
   <div class="splash-icon">🎙️</div>
-  <h2>Volume Sonore</h2>
+  <h2>Sonomètre de Classe</h2>
   <p>Pour mesurer le niveau sonore, l'application a besoin d'accéder à votre microphone.</p>
   <button class="btn-allow" id="btnAllow" onclick="requestMic()">🎤 Activer le microphone</button>
   <div class="splash-error" id="splashError"></div>
@@ -222,7 +237,7 @@
 <div class="flash-overlay" id="flashOverlay"></div>
 
 <div class="container">
-  <h1>🎙️ Volume Sonore</h1>
+  <h1>🎙️ Sonomètre de Classe</h1>
 
   <div class="mic-status"><div class="mic-dot"></div><span>MICROPHONE ACTIF</span></div>
 
@@ -236,77 +251,152 @@
     </div>
     <div class="gauge-track">
       <div class="gauge-fill" id="gaugeFill"></div>
-      <div class="gauge-marker" id="gaugeMarker"></div>
+      <!-- 3 marqueurs pour les 3 seuils intermédiaires -->
+      <div class="gauge-marker marker-silence" id="m1" data-label="SILENCE"></div>
+      <div class="gauge-marker marker-normal"  id="m2" data-label="NORMAL"></div>
+      <div class="gauge-marker marker-bruyant" id="m3" data-label="BRUYANT"></div>
     </div>
   </div>
 
   <div class="emoji" id="emoji">😊</div>
   <div class="status calme" id="status">Écoute en cours…</div>
 
+  <!-- Boutons -->
   <div class="controls">
     <button class="btn-stop"    id="btnStop"    onclick="stopMic()">⏹ Couper le micro</button>
     <button class="btn-restart" id="btnRestart" onclick="restartMic()" style="display:none">🔄 Réactiver</button>
-    <div class="threshold-control">
-      <label>SEUIL D'ALERTE</label>
-      <input type="range" id="thresholdSlider" min="40" max="90" value="65" oninput="updateThreshold()">
-      <span class="threshold-value" id="thresholdVal">65 dB</span>
+    <button class="btn-settings" id="btnSettings" onclick="toggleSettings()">⚙️ Paramétrer les seuils</button>
+  </div>
+
+  <!-- PANNEAU DE PARAMÉTRAGE -->
+  <div class="settings-panel" id="settingsPanel">
+    <div class="settings-title">⚙️ Seuils sonores</div>
+
+    <!-- Silence → Normal -->
+    <div class="seuil-row">
+      <div class="seuil-label">
+        <div class="seuil-dot" style="background:var(--green)"></div>
+        😊 Silence
+      </div>
+      <input type="range" class="range-silence" id="s1" min="30" max="100" value="50"
+             oninput="updateSeuils()">
+      <span class="seuil-value val-silence" id="v1">50 dB</span>
+    </div>
+
+    <!-- Normal → Bruyant -->
+    <div class="seuil-row">
+      <div class="seuil-label">
+        <div class="seuil-dot" style="background:var(--yellow)"></div>
+        🤫 Normal
+      </div>
+      <input type="range" class="range-normal" id="s2" min="30" max="100" value="65"
+             oninput="updateSeuils()">
+      <span class="seuil-value val-normal" id="v2">65 dB</span>
+    </div>
+
+    <!-- Bruyant → Trop fort -->
+    <div class="seuil-row">
+      <div class="seuil-label">
+        <div class="seuil-dot" style="background:var(--orange)"></div>
+        😤 Bruyant
+      </div>
+      <input type="range" class="range-bruyant" id="s3" min="30" max="100" value="78"
+             oninput="updateSeuils()">
+      <span class="seuil-value" style="color:var(--orange)" id="v3">78 dB</span>
+    </div>
+
+    <!-- Trop fort (info only) -->
+    <div class="seuil-row" style="opacity:.6">
+      <div class="seuil-label">
+        <div class="seuil-dot" style="background:var(--red)"></div>
+        🤬 Trop fort
+      </div>
+      <div style="flex:1; padding:0 8px; font-size:.85rem; font-weight:700; letter-spacing:1px;">
+        Au-dessus du seuil "Bruyant"
+      </div>
+      <span class="seuil-value" style="color:var(--red)" id="v4">></span>
+    </div>
+
+    <div class="settings-hint">
+      💡 Valeurs suggérées pour gymnase : Silence 50 dB · Normal 65 dB · Bruyant 78 dB
     </div>
   </div>
 </div>
 
 <script>
   let audioCtx, analyser, source, animFrame, micStream;
-  let threshold   = 65;
   let isRunning   = false;
-
-  // ── Lissage + paliers de 5 dB ──────────────────────────────────────────
-  let smoothedDb  = 30;  // valeur lissée (pour la jauge et les couleurs)
-  let displayedDb = -1;  // dernière valeur AFFICHÉE (arrondie à 5)
-  //
-  // SMOOTH_FACTOR : plus la valeur est basse, plus le chiffre change lentement.
-  // 0.08 = environ 1 mise à jour toutes les ~2 secondes à volume stable.
+  let smoothedDb  = 30;
+  let displayedDb = -1;
   const SMOOTH_FACTOR = 0.08;
+
+  // Seuils par défaut (gymnase)
+  let seuils = { s1: 50, s2: 65, s3: 78 };
 
   // Build waveform bars
   const waveformEl = document.getElementById('waveform');
-  const NUM_BARS = 32;
+  const NUM_BARS   = 32;
   for (let i = 0; i < NUM_BARS; i++) {
-    const b = document.createElement('div');
-    b.className = 'bar';
+    const b = document.createElement('div'); b.className = 'bar';
     waveformEl.appendChild(b);
   }
   const bars = waveformEl.querySelectorAll('.bar');
 
-  function updateThreshold() {
-    threshold = parseInt(document.getElementById('thresholdSlider').value);
-    document.getElementById('thresholdVal').textContent = threshold + ' dB';
-    const pct = ((threshold - 40) / 60) * 100;
-    document.getElementById('gaugeMarker').style.left = pct + '%';
-  }
-  updateThreshold();
+  // ── Mise à jour des seuils ────────────────────────────────────────────────
+  function updateSeuils() {
+    let v1 = parseInt(document.getElementById('s1').value);
+    let v2 = parseInt(document.getElementById('s2').value);
+    let v3 = parseInt(document.getElementById('s3').value);
 
+    // Forcer l'ordre : s1 < s2 < s3
+    if (v2 <= v1) { v2 = v1 + 5; document.getElementById('s2').value = v2; }
+    if (v3 <= v2) { v3 = v2 + 5; document.getElementById('s3').value = v3; }
+
+    seuils = { s1: v1, s2: v2, s3: v3 };
+
+    document.getElementById('v1').textContent = v1 + ' dB';
+    document.getElementById('v2').textContent = v2 + ' dB';
+    document.getElementById('v3').textContent = v3 + ' dB';
+    document.getElementById('v4').textContent = '> ' + v3 + ' dB';
+
+    // Positionner les marqueurs sur la jauge (plage affichée : 30–100 dB)
+    document.getElementById('m1').style.left = pctGauge(v1) + '%';
+    document.getElementById('m2').style.left = pctGauge(v2) + '%';
+    document.getElementById('m3').style.left = pctGauge(v3) + '%';
+  }
+
+  function pctGauge(db) { return Math.min(100, Math.max(0, ((db - 30) / 70) * 100)); }
+
+  updateSeuils(); // init
+
+  // ── Toggle panneau ────────────────────────────────────────────────────────
+  function toggleSettings() {
+    const panel = document.getElementById('settingsPanel');
+    const btn   = document.getElementById('btnSettings');
+    const open  = panel.classList.toggle('open');
+    btn.classList.toggle('active', open);
+    btn.textContent = open ? '✖ Fermer les paramètres' : '⚙️ Paramétrer les seuils';
+  }
+
+  // ── Micro ─────────────────────────────────────────────────────────────────
   async function requestMic() {
     const btn   = document.getElementById('btnAllow');
     const errEl = document.getElementById('splashError');
-    btn.textContent = '⏳ Connexion…';
-    btn.disabled    = true;
+    btn.textContent = '⏳ Connexion…'; btn.disabled = true;
     errEl.style.display = 'none';
-
     try {
-      micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      micStream = await navigator.mediaDevices.getUserMedia({ audio:true, video:false });
       document.getElementById('splash').classList.add('hidden');
       startAudio(micStream);
-    } catch (e) {
-      btn.textContent = '🎤 Activer le microphone';
-      btn.disabled    = false;
+    } catch(e) {
+      btn.textContent = '🎤 Activer le microphone'; btn.disabled = false;
       errEl.style.display = 'block';
-      if (e.name === 'NotAllowedError') {
-        errEl.textContent = '⚠️ Accès refusé. Cliquez sur le cadenas 🔒 dans la barre d\'adresse → Microphone → Autoriser, puis rechargez la page.';
-      } else if (e.name === 'NotFoundError') {
-        errEl.textContent = '⚠️ Aucun microphone détecté sur cet appareil.';
-      } else {
+      if (e.name === 'NotAllowedError')
+        errEl.textContent = '⚠️ Accès refusé. Cliquez sur le cadenas 🔒 → Microphone → Autoriser, puis rechargez.';
+      else if (e.name === 'NotFoundError')
+        errEl.textContent = '⚠️ Aucun microphone détecté.';
+      else
         errEl.textContent = '⚠️ Erreur : ' + e.message;
-      }
     }
   }
 
@@ -314,20 +404,17 @@
     audioCtx = new AudioContext();
     analyser = audioCtx.createAnalyser();
     analyser.fftSize = 1024;
-    analyser.smoothingTimeConstant = 0.85; // lissage WebAudio natif
-    source   = audioCtx.createMediaStreamSource(stream);
+    analyser.smoothingTimeConstant = 0.85;
+    source = audioCtx.createMediaStreamSource(stream);
     source.connect(analyser);
-    isRunning   = true;
-    smoothedDb  = 30;
-    displayedDb = -1;
+    isRunning = true; smoothedDb = 30; displayedDb = -1;
     document.getElementById('btnStop').style.display    = 'inline-block';
     document.getElementById('btnRestart').style.display = 'none';
     loop();
   }
 
   function stopMic() {
-    isRunning = false;
-    cancelAnimationFrame(animFrame);
+    isRunning = false; cancelAnimationFrame(animFrame);
     if (audioCtx)  audioCtx.close();
     if (micStream) micStream.getTracks().forEach(t => t.stop());
     document.getElementById('btnStop').style.display    = 'none';
@@ -342,13 +429,12 @@
 
   async function restartMic() {
     try {
-      micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      micStream = await navigator.mediaDevices.getUserMedia({ audio:true, video:false });
       startAudio(micStream);
-    } catch (e) {
-      alert('Impossible de réactiver le micro : ' + e.message);
-    }
+    } catch(e) { alert('Impossible de réactiver le micro : ' + e.message); }
   }
 
+  // ── Boucle principale ─────────────────────────────────────────────────────
   function loop() {
     if (!isRunning) return;
     animFrame = requestAnimationFrame(loop);
@@ -358,59 +444,57 @@
 
     // RMS → dB brut
     let sum = 0;
-    for (let i = 0; i < dataArray.length; i++) sum += (dataArray[i] / 255) ** 2;
+    for (let i = 0; i < dataArray.length; i++) sum += (dataArray[i]/255)**2;
     const rms   = Math.sqrt(sum / dataArray.length);
-    const rawDb = rms < 0.0001 ? 30 : Math.min(100, Math.max(30, 20 * Math.log10(rms) + 90));
+    const rawDb = rms < 0.0001 ? 30 : Math.min(100, Math.max(30, 20*Math.log10(rms)+90));
 
-    // ── 1. Lissage exponentiel (valeur continue) ──
+    // Lissage exponentiel
     smoothedDb = smoothedDb + SMOOTH_FACTOR * (rawDb - smoothedDb);
 
-    // ── 2. Arrondi au multiple de 5 le plus proche ──
+    // Arrondi au multiple de 5
     const stepped = Math.round(smoothedDb / 5) * 5;
 
-    // ── 3. N'afficher que si la valeur arrondie a changé ──
+    // Affichage du chiffre seulement si changement
     const dbEl = document.getElementById('dbDisplay');
     if (stepped !== displayedDb) {
       displayedDb = stepped;
       dbEl.innerHTML = `${stepped} <span>dB</span>`;
     }
 
-    // Waveform : animée en temps réel (pas d'arrondi)
+    // Waveform
     const step = Math.floor(dataArray.length / NUM_BARS);
     bars.forEach((bar, i) => {
-      const val = dataArray[i * step] / 255;
-      bar.style.height     = Math.max(4, val * 56) + 'px';
+      const val = dataArray[i*step]/255;
+      bar.style.height     = Math.max(4, val*56)+'px';
       bar.style.background = `rgb(${Math.floor(val*255)},${Math.floor((1-val)*200+55)},${Math.floor((1-val)*250)})`;
     });
 
-    // Jauge : fluide (basée sur smoothedDb, pas stepped)
-    const pct = Math.min(100, ((smoothedDb - 30) / 70) * 100);
-    document.getElementById('gaugeFill').style.width = pct + '%';
+    // Jauge (fluide)
+    document.getElementById('gaugeFill').style.width = pctGauge(smoothedDb) + '%';
 
-    // Couleurs et statut (basés sur smoothedDb)
+    // Statut basé sur les 4 seuils paramétrables
     const statusEl = document.getElementById('status');
     const emojiEl  = document.getElementById('emoji');
     const flash    = document.getElementById('flashOverlay');
-    const dbAbove  = smoothedDb - threshold;
 
-    if (smoothedDb < threshold - 15) {
+    if (smoothedDb < seuils.s1) {
       dbEl.style.color      = 'var(--green)';
       dbEl.style.textShadow = '0 0 60px var(--green)';
-      statusEl.textContent  = '😊 Parfait — Bonne ambiance de travail';
+      statusEl.textContent  = '😊 Parfait — Silence de travail';
       statusEl.className    = 'status calme';
       emojiEl.textContent   = '😊';
       flash.style.opacity   = '0';
-    } else if (smoothedDb < threshold) {
+    } else if (smoothedDb < seuils.s2) {
       dbEl.style.color      = 'var(--yellow)';
       dbEl.style.textShadow = '0 0 60px var(--yellow)';
-      statusEl.textContent  = '🤫 Attention — Le bruit monte';
+      statusEl.textContent  = '🤫 Niveau normal';
       statusEl.className    = 'status modere';
       emojiEl.textContent   = '🤫';
       flash.style.opacity   = '0';
-    } else if (dbAbove < 8) {
+    } else if (smoothedDb < seuils.s3) {
       dbEl.style.color      = 'var(--orange)';
       dbEl.style.textShadow = '0 0 60px var(--orange)';
-      statusEl.textContent  = '⚠️ Trop bruyant — Chuchotez !';
+      statusEl.textContent  = '⚠️ Trop bruyant — Baissez le son !';
       statusEl.className    = 'status bruyant';
       emojiEl.textContent   = '😤';
       flash.style.opacity   = '0.05';
