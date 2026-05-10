@@ -32,7 +32,6 @@
     position: relative;
   }
 
-  /* Animated background grid */
   body::before {
     content: '';
     position: fixed;
@@ -44,6 +43,73 @@
     pointer-events: none;
   }
 
+  /* ===== SPLASH ===== */
+  .splash {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    background: var(--bg);
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+  .splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+  .splash-icon { font-size: 6rem; animation: float 2.5s ease-in-out infinite; }
+
+  .splash h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, #a78bfa, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+  }
+
+  .splash p { font-size: 1.1rem; opacity: 0.6; text-align: center; max-width: 360px; line-height: 1.6; }
+
+  .btn-allow {
+    padding: 18px 48px;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #a78bfa, #60a5fa);
+    color: white;
+    transition: all 0.2s;
+    animation: pulse-btn 2s ease-in-out infinite;
+  }
+  .btn-allow:hover   { transform: scale(1.06); }
+  .btn-allow:disabled { opacity: 0.6; cursor: wait; animation: none; }
+
+  @keyframes pulse-btn {
+    0%,100% { box-shadow: 0 0 30px rgba(167,139,250,0.3); }
+    50%     { box-shadow: 0 0 60px rgba(167,139,250,0.6); }
+  }
+
+  .splash-error {
+    color: var(--red);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-align: center;
+    max-width: 340px;
+    display: none;
+    background: rgba(255,23,68,0.1);
+    border: 1px solid rgba(255,23,68,0.3);
+    border-radius: 12px;
+    padding: 12px 24px;
+    line-height: 1.5;
+  }
+
+  /* ===== APP ===== */
   .container {
     display: flex;
     flex-direction: column;
@@ -67,96 +133,36 @@
     background-clip: text;
   }
 
-  /* Big dB display */
   .db-display {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(5rem, 18vw, 14rem);
     line-height: 1;
     letter-spacing: -4px;
-    transition: color 0.3s ease;
+    transition: color 0.4s ease, text-shadow 0.4s ease;
     text-shadow: 0 0 60px currentColor;
     color: var(--green);
   }
+  .db-display span { font-size: 0.35em; font-family: 'Nunito', sans-serif; font-weight: 900; letter-spacing: 2px; opacity: 0.7; }
 
-  .db-display span {
-    font-size: 0.35em;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    letter-spacing: 2px;
-    opacity: 0.7;
-  }
+  .gauge-wrapper { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+  .gauge-labels { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; }
 
-  /* Gauge bar */
-  .gauge-wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .gauge-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    font-weight: 700;
-    opacity: 0.5;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .gauge-track {
-    width: 100%;
-    height: 40px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 20px;
-    overflow: hidden;
-    position: relative;
-    border: 1px solid rgba(255,255,255,0.08);
-  }
+  .gauge-track { width: 100%; height: 40px; background: rgba(255,255,255,0.05); border-radius: 20px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.08); }
 
   .gauge-fill {
     height: 100%;
     border-radius: 20px;
     width: 0%;
-    transition: width 0.12s ease-out;
+    transition: width 0.15s ease-out;
     position: relative;
     background: linear-gradient(90deg, var(--green) 0%, var(--yellow) 55%, var(--orange) 75%, var(--red) 100%);
     background-size: 900px 100%;
   }
+  .gauge-fill::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 100%); border-radius: 20px; }
 
-  .gauge-fill::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 100%);
-    border-radius: 20px;
-  }
+  .gauge-marker { position: absolute; top: 0; bottom: 0; width: 3px; background: white; opacity: 0.6; border-radius: 2px; }
+  .gauge-marker::after { content: 'SEUIL'; position: absolute; top: -22px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; font-weight: 700; letter-spacing: 1px; color: white; opacity: 0.7; white-space: nowrap; }
 
-  /* Threshold marker */
-  .gauge-marker {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: white;
-    opacity: 0.6;
-    border-radius: 2px;
-  }
-  .gauge-marker::after {
-    content: 'SEUIL';
-    position: absolute;
-    top: -22px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: white;
-    opacity: 0.7;
-    white-space: nowrap;
-  }
-
-  /* Status message */
   .status {
     font-size: clamp(1.5rem, 4vw, 3rem);
     font-weight: 900;
@@ -165,186 +171,68 @@
     text-transform: uppercase;
     padding: 16px 40px;
     border-radius: 16px;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
     min-width: 320px;
   }
+  .status.calme       { background: rgba(0,230,118,0.12);  color: var(--green);  border: 2px solid rgba(0,230,118,0.3); }
+  .status.modere      { background: rgba(255,234,0,0.12);  color: var(--yellow); border: 2px solid rgba(255,234,0,0.3); }
+  .status.bruyant     { background: rgba(255,109,0,0.15);  color: var(--orange); border: 2px solid rgba(255,109,0,0.4); animation: pulse-orange 0.8s ease-in-out infinite alternate; }
+  .status.trop-bruyant{ background: rgba(255,23,68,0.2);   color: var(--red);    border: 2px solid rgba(255,23,68,0.5); animation: pulse-red 0.4s ease-in-out infinite alternate; }
 
-  .status.calme {
-    background: rgba(0, 230, 118, 0.12);
-    color: var(--green);
-    border: 2px solid rgba(0, 230, 118, 0.3);
-  }
-  .status.modere {
-    background: rgba(255, 234, 0, 0.12);
-    color: var(--yellow);
-    border: 2px solid rgba(255, 234, 0, 0.3);
-  }
-  .status.bruyant {
-    background: rgba(255, 109, 0, 0.15);
-    color: var(--orange);
-    border: 2px solid rgba(255, 109, 0, 0.4);
-    animation: pulse-orange 0.8s ease-in-out infinite alternate;
-  }
-  .status.trop-bruyant {
-    background: rgba(255, 23, 68, 0.2);
-    color: var(--red);
-    border: 2px solid rgba(255, 23, 68, 0.5);
-    animation: pulse-red 0.4s ease-in-out infinite alternate;
-  }
+  @keyframes pulse-orange { from{box-shadow:0 0 0px rgba(255,109,0,0);} to{box-shadow:0 0 30px rgba(255,109,0,0.4);} }
+  @keyframes pulse-red    { from{box-shadow:0 0 0px rgba(255,23,68,0); transform:scale(1);} to{box-shadow:0 0 50px rgba(255,23,68,0.6); transform:scale(1.02);} }
 
-  @keyframes pulse-orange {
-    from { box-shadow: 0 0 0px rgba(255, 109, 0, 0); }
-    to { box-shadow: 0 0 30px rgba(255, 109, 0, 0.4); }
-  }
-  @keyframes pulse-red {
-    from { box-shadow: 0 0 0px rgba(255, 23, 68, 0); transform: scale(1); }
-    to { box-shadow: 0 0 50px rgba(255, 23, 68, 0.6); transform: scale(1.02); }
-  }
+  .emoji { font-size: clamp(3rem, 8vw, 6rem); filter: drop-shadow(0 0 20px rgba(255,255,255,0.3)); transition: all 0.3s; animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
 
-  /* Emoji indicator */
-  .emoji {
-    font-size: clamp(3rem, 8vw, 6rem);
-    filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
-    transition: all 0.3s;
-    animation: float 3s ease-in-out infinite;
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
+  .waveform { display: flex; align-items: center; gap: 4px; height: 60px; }
+  .bar { width: 6px; background: rgba(167,139,250,0.4); border-radius: 3px; transition: height 0.1s ease; height: 4px; }
 
-  /* Waveform bars */
-  .waveform {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    height: 60px;
-  }
+  .controls { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; justify-content: center; }
 
-  .bar {
-    width: 6px;
-    background: rgba(167, 139, 250, 0.4);
-    border-radius: 3px;
-    transition: height 0.1s ease;
-    height: 4px;
-  }
-
-  /* Controls */
-  .controls {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  button {
-    padding: 12px 32px;
-    border: none;
-    border-radius: 50px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .btn-start {
-    background: linear-gradient(135deg, #a78bfa, #60a5fa);
-    color: white;
-  }
-  .btn-start:hover { transform: scale(1.05); box-shadow: 0 8px 30px rgba(167,139,250,0.4); }
-
-  .btn-stop {
-    background: rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.7);
-    border: 1px solid rgba(255,255,255,0.15);
-  }
+  button { padding: 12px 32px; border: none; border-radius: 50px; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; }
+  .btn-stop    { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.15); }
   .btn-stop:hover { background: rgba(255,255,255,0.15); }
+  .btn-restart { background: linear-gradient(135deg, #a78bfa, #60a5fa); color: white; }
+  .btn-restart:hover { transform: scale(1.05); box-shadow: 0 8px 30px rgba(167,139,250,0.4); }
 
-  /* Threshold slider */
-  .threshold-control {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 50px;
-    padding: 10px 24px;
-  }
+  .threshold-control { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 50px; padding: 10px 24px; }
+  .threshold-control label { font-size: 0.85rem; font-weight: 700; opacity: 0.7; letter-spacing: 1px; white-space: nowrap; }
+  input[type="range"] { -webkit-appearance: none; width: 120px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; outline: none; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(135deg, #a78bfa, #60a5fa); cursor: pointer; }
+  .threshold-value { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: #a78bfa; min-width: 50px; }
 
-  .threshold-control label {
-    font-size: 0.85rem;
-    font-weight: 700;
-    opacity: 0.7;
-    letter-spacing: 1px;
-    white-space: nowrap;
-  }
+  .flash-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: 0; background: rgba(255,23,68,0.15); transition: opacity 0.05s; }
 
-  input[type="range"] {
-    -webkit-appearance: none;
-    width: 120px;
-    height: 4px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 2px;
-    outline: none;
-  }
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #a78bfa, #60a5fa);
-    cursor: pointer;
-  }
-
-  .threshold-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    color: #a78bfa;
-    min-width: 50px;
-  }
-
-  /* Screen flash overlay */
-  .flash-overlay {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 100;
-    opacity: 0;
-    background: rgba(255, 23, 68, 0.15);
-    transition: opacity 0.05s;
-  }
-
-  .idle-msg {
-    font-size: 1rem;
-    opacity: 0.4;
-    text-align: center;
-    font-weight: 700;
-    letter-spacing: 1px;
-  }
+  .mic-status { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 700; opacity: 0.6; letter-spacing: 1px; }
+  .mic-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); animation: blink 1.2s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
 </style>
 </head>
 <body>
+
+<div class="splash" id="splash">
+  <div class="splash-icon">🎙️</div>
+  <h2>Sonomètre de Classe</h2>
+  <p>Pour mesurer le niveau sonore, l'application a besoin d'accéder à votre microphone.</p>
+  <button class="btn-allow" id="btnAllow" onclick="requestMic()">🎤 Activer le microphone</button>
+  <div class="splash-error" id="splashError"></div>
+</div>
 
 <div class="flash-overlay" id="flashOverlay"></div>
 
 <div class="container">
   <h1>🎙️ Sonomètre de Classe</h1>
 
-  <div class="waveform" id="waveform">
-    <!-- bars injected by JS -->
-  </div>
+  <div class="mic-status"><div class="mic-dot"></div><span>MICROPHONE ACTIF</span></div>
+
+  <div class="waveform" id="waveform"></div>
 
   <div class="db-display" id="dbDisplay">-- <span>dB</span></div>
 
   <div class="gauge-wrapper">
     <div class="gauge-labels">
-      <span>Silence</span>
-      <span>Normal</span>
-      <span>Bruyant</span>
-      <span>Trop fort !</span>
+      <span>Silence</span><span>Normal</span><span>Bruyant</span><span>Trop fort !</span>
     </div>
     <div class="gauge-track">
       <div class="gauge-fill" id="gaugeFill"></div>
@@ -352,27 +240,32 @@
     </div>
   </div>
 
-  <div class="emoji" id="emoji">😴</div>
-  <div class="status calme" id="status">En attente...</div>
+  <div class="emoji" id="emoji">😊</div>
+  <div class="status calme" id="status">Écoute en cours…</div>
 
   <div class="controls">
-    <button class="btn-start" id="btnStart" onclick="startMic()">▶ Démarrer le micro</button>
-    <button class="btn-stop" id="btnStop" onclick="stopMic()" style="display:none">⏹ Arrêter</button>
-
+    <button class="btn-stop"    id="btnStop"    onclick="stopMic()">⏹ Couper le micro</button>
+    <button class="btn-restart" id="btnRestart" onclick="restartMic()" style="display:none">🔄 Réactiver</button>
     <div class="threshold-control">
       <label>SEUIL D'ALERTE</label>
       <input type="range" id="thresholdSlider" min="40" max="90" value="65" oninput="updateThreshold()">
       <span class="threshold-value" id="thresholdVal">65 dB</span>
     </div>
   </div>
-
-  <p class="idle-msg" id="idleMsg">Autorisez l'accès au microphone pour commencer</p>
 </div>
 
 <script>
-  let audioCtx, analyser, source, animFrame;
-  let threshold = 65;
-  let isRunning = false;
+  let audioCtx, analyser, source, animFrame, micStream;
+  let threshold   = 65;
+  let isRunning   = false;
+
+  // ── Lissage + paliers de 5 dB ──────────────────────────────────────────
+  let smoothedDb  = 30;  // valeur lissée (pour la jauge et les couleurs)
+  let displayedDb = -1;  // dernière valeur AFFICHÉE (arrondie à 5)
+  //
+  // SMOOTH_FACTOR : plus la valeur est basse, plus le chiffre change lentement.
+  // 0.08 = environ 1 mise à jour toutes les ~2 secondes à volume stable.
+  const SMOOTH_FACTOR = 0.08;
 
   // Build waveform bars
   const waveformEl = document.getElementById('waveform');
@@ -387,44 +280,73 @@
   function updateThreshold() {
     threshold = parseInt(document.getElementById('thresholdSlider').value);
     document.getElementById('thresholdVal').textContent = threshold + ' dB';
-    // Update marker position on gauge (mapped from 40-100 dB range)
     const pct = ((threshold - 40) / 60) * 100;
     document.getElementById('gaugeMarker').style.left = pct + '%';
   }
   updateThreshold();
 
-  async function startMic() {
+  async function requestMic() {
+    const btn   = document.getElementById('btnAllow');
+    const errEl = document.getElementById('splashError');
+    btn.textContent = '⏳ Connexion…';
+    btn.disabled    = true;
+    errEl.style.display = 'none';
+
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      audioCtx = new AudioContext();
-      analyser = audioCtx.createAnalyser();
-      analyser.fftSize = 1024;
-      analyser.smoothingTimeConstant = 0.75;
-      source = audioCtx.createMediaStreamSource(stream);
-      source.connect(analyser);
-      isRunning = true;
-      document.getElementById('btnStart').style.display = 'none';
-      document.getElementById('btnStop').style.display = 'inline-block';
-      document.getElementById('idleMsg').style.display = 'none';
-      loop();
-    } catch(e) {
-      document.getElementById('idleMsg').textContent = '⚠️ Impossible d\'accéder au microphone. Vérifiez les permissions.';
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      document.getElementById('splash').classList.add('hidden');
+      startAudio(micStream);
+    } catch (e) {
+      btn.textContent = '🎤 Activer le microphone';
+      btn.disabled    = false;
+      errEl.style.display = 'block';
+      if (e.name === 'NotAllowedError') {
+        errEl.textContent = '⚠️ Accès refusé. Cliquez sur le cadenas 🔒 dans la barre d\'adresse → Microphone → Autoriser, puis rechargez la page.';
+      } else if (e.name === 'NotFoundError') {
+        errEl.textContent = '⚠️ Aucun microphone détecté sur cet appareil.';
+      } else {
+        errEl.textContent = '⚠️ Erreur : ' + e.message;
+      }
     }
+  }
+
+  function startAudio(stream) {
+    audioCtx = new AudioContext();
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 1024;
+    analyser.smoothingTimeConstant = 0.85; // lissage WebAudio natif
+    source   = audioCtx.createMediaStreamSource(stream);
+    source.connect(analyser);
+    isRunning   = true;
+    smoothedDb  = 30;
+    displayedDb = -1;
+    document.getElementById('btnStop').style.display    = 'inline-block';
+    document.getElementById('btnRestart').style.display = 'none';
+    loop();
   }
 
   function stopMic() {
     isRunning = false;
     cancelAnimationFrame(animFrame);
-    if (audioCtx) audioCtx.close();
-    document.getElementById('btnStart').style.display = 'inline-block';
-    document.getElementById('btnStop').style.display = 'none';
-    document.getElementById('idleMsg').style.display = 'block';
-    document.getElementById('dbDisplay').innerHTML = '-- <span>dB</span>';
-    document.getElementById('gaugeFill').style.width = '0%';
-    document.getElementById('status').textContent = 'En attente...';
-    document.getElementById('status').className = 'status calme';
-    document.getElementById('emoji').textContent = '😴';
+    if (audioCtx)  audioCtx.close();
+    if (micStream) micStream.getTracks().forEach(t => t.stop());
+    document.getElementById('btnStop').style.display    = 'none';
+    document.getElementById('btnRestart').style.display = 'inline-block';
+    document.getElementById('dbDisplay').innerHTML      = '-- <span>dB</span>';
+    document.getElementById('gaugeFill').style.width    = '0%';
+    document.getElementById('status').textContent       = 'Micro coupé';
+    document.getElementById('status').className         = 'status calme';
+    document.getElementById('emoji').textContent        = '😴';
     bars.forEach(b => b.style.height = '4px');
+  }
+
+  async function restartMic() {
+    try {
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      startAudio(micStream);
+    } catch (e) {
+      alert('Impossible de réactiver le micro : ' + e.message);
+    }
   }
 
   function loop() {
@@ -434,68 +356,71 @@
     const dataArray = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(dataArray);
 
-    // Compute RMS → approximate dB
+    // RMS → dB brut
     let sum = 0;
     for (let i = 0; i < dataArray.length; i++) sum += (dataArray[i] / 255) ** 2;
-    const rms = Math.sqrt(sum / dataArray.length);
-    // Map RMS to dB range ~30–100
-    const db = rms < 0.0001 ? 30 : Math.min(100, Math.max(30, 20 * Math.log10(rms) + 90));
+    const rms   = Math.sqrt(sum / dataArray.length);
+    const rawDb = rms < 0.0001 ? 30 : Math.min(100, Math.max(30, 20 * Math.log10(rms) + 90));
 
-    // Update waveform bars (use lower frequency bins for visual)
+    // ── 1. Lissage exponentiel (valeur continue) ──
+    smoothedDb = smoothedDb + SMOOTH_FACTOR * (rawDb - smoothedDb);
+
+    // ── 2. Arrondi au multiple de 5 le plus proche ──
+    const stepped = Math.round(smoothedDb / 5) * 5;
+
+    // ── 3. N'afficher que si la valeur arrondie a changé ──
+    const dbEl = document.getElementById('dbDisplay');
+    if (stepped !== displayedDb) {
+      displayedDb = stepped;
+      dbEl.innerHTML = `${stepped} <span>dB</span>`;
+    }
+
+    // Waveform : animée en temps réel (pas d'arrondi)
     const step = Math.floor(dataArray.length / NUM_BARS);
     bars.forEach((bar, i) => {
       const val = dataArray[i * step] / 255;
-      const h = Math.max(4, val * 56);
-      bar.style.height = h + 'px';
-      const r = Math.floor(val * 255);
-      bar.style.background = `rgb(${r}, ${Math.floor((1-val)*200 + 55)}, ${Math.floor((1-val)*250)})`;
+      bar.style.height     = Math.max(4, val * 56) + 'px';
+      bar.style.background = `rgb(${Math.floor(val*255)},${Math.floor((1-val)*200+55)},${Math.floor((1-val)*250)})`;
     });
 
-    // dB display
-    const dbRounded = Math.round(db);
-    const dbEl = document.getElementById('dbDisplay');
-    dbEl.innerHTML = `${dbRounded} <span>dB</span>`;
-
-    // Gauge fill (30–100 dB range)
-    const pct = Math.min(100, ((db - 30) / 70) * 100);
+    // Jauge : fluide (basée sur smoothedDb, pas stepped)
+    const pct = Math.min(100, ((smoothedDb - 30) / 70) * 100);
     document.getElementById('gaugeFill').style.width = pct + '%';
 
-    // Status logic
+    // Couleurs et statut (basés sur smoothedDb)
     const statusEl = document.getElementById('status');
-    const emojiEl = document.getElementById('emoji');
-    const flash = document.getElementById('flashOverlay');
+    const emojiEl  = document.getElementById('emoji');
+    const flash    = document.getElementById('flashOverlay');
+    const dbAbove  = smoothedDb - threshold;
 
-    const over = db >= threshold;
-    const dbAbove = db - threshold;
-
-    if (db < threshold - 15) {
-      dbEl.style.color = 'var(--green)';
+    if (smoothedDb < threshold - 15) {
+      dbEl.style.color      = 'var(--green)';
       dbEl.style.textShadow = '0 0 60px var(--green)';
-      statusEl.textContent = '😊 Parfait — Bonne ambiance de travail';
-      statusEl.className = 'status calme';
-      emojiEl.textContent = '😊';
-      flash.style.opacity = '0';
-    } else if (db < threshold) {
-      dbEl.style.color = 'var(--yellow)';
+      statusEl.textContent  = '😊 Parfait — Bonne ambiance de travail';
+      statusEl.className    = 'status calme';
+      emojiEl.textContent   = '😊';
+      flash.style.opacity   = '0';
+    } else if (smoothedDb < threshold) {
+      dbEl.style.color      = 'var(--yellow)';
       dbEl.style.textShadow = '0 0 60px var(--yellow)';
-      statusEl.textContent = '🤫 Attention — Le bruit monte';
-      statusEl.className = 'status modere';
-      emojiEl.textContent = '🤫';
-      flash.style.opacity = '0';
+      statusEl.textContent  = '🤫 Attention — Le bruit monte';
+      statusEl.className    = 'status modere';
+      emojiEl.textContent   = '🤫';
+      flash.style.opacity   = '0';
     } else if (dbAbove < 8) {
-      dbEl.style.color = 'var(--orange)';
+      dbEl.style.color      = 'var(--orange)';
       dbEl.style.textShadow = '0 0 60px var(--orange)';
-      statusEl.textContent = '⚠️ Trop bruyant — Chuchotez !';
-      statusEl.className = 'status bruyant';
-      emojiEl.textContent = '😤';
-      flash.style.opacity = '0.05';
+      statusEl.textContent  = '⚠️ Trop bruyant — Chuchotez !';
+      statusEl.className    = 'status bruyant';
+      emojiEl.textContent   = '😤';
+      flash.style.opacity   = '0.05';
     } else {
-      dbEl.style.color = 'var(--red)';
+      dbEl.style.color      = 'var(--red)';
       dbEl.style.textShadow = '0 0 80px var(--red)';
-      statusEl.textContent = '🚨 SILENCE S\'IL VOUS PLAÎT !';
-      statusEl.className = 'status trop-bruyant';
-      emojiEl.textContent = '🤬';
-      flash.style.opacity = '0.2';
+      statusEl.textContent  = '🚨 SILENCE S\'IL VOUS PLAÎT !';
+      statusEl.className    = 'status trop-bruyant';
+      emojiEl.textContent   = '🤬';
+      flash.style.opacity   = '0.2';
     }
   }
 </script>
